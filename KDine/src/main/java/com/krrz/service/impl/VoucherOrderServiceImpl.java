@@ -10,6 +10,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.krrz.utils.RedisIdWorker;
 import com.krrz.utils.SimpleRedisLock;
 import com.krrz.utils.UserHolder;
+import org.springframework.amqp.rabbit.connection.CorrelationData;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.aop.framework.AopContext;
 import org.springframework.core.io.ClassPathResource;
@@ -191,7 +192,7 @@ public class VoucherOrderServiceImpl extends ServiceImpl<VoucherOrderMapper, Vou
         map.put("voucherId",voucherId);
         map.put("id",orderId);
         map.put("createTime", new Date().getTime());
-        rabbitTemplate.convertAndSend("KDineExchange","myRoutingKey",map);
+        rabbitTemplate.convertAndSend("KDineExchange","myRoutingKey",map,new CorrelationData(UUID.randomUUID().toString()));
         //获取代理对象
         proxy = (IVoucherOrderService) AopContext.currentProxy();
 

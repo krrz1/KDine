@@ -29,6 +29,10 @@ spring:
       simple:
         prefetch: 1
         acknowledge-mode: manual
+    # 生产者发送消息到交换机 confirm 机制
+    publisher-confirm-type: correlated
+    # 生产者交换机到队列 确认回调
+    publisher-returns: true
 mybatis-plus:
   type-aliases-package: com.hmdp.entity # 别名扫描包
 logging:
